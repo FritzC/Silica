@@ -24,7 +24,7 @@ public class MALScraper {
 			userAgent = new UserAgent();
 			userAgent.visit(url);
 		} catch (Exception e) {
-			System.out.println("Error fetching page (" + url + ")");
+			Logger.error("Error fetching page (" + url + ")");
 		}
 	}
 	
@@ -33,10 +33,17 @@ public class MALScraper {
 	 * 
 	 * @return - Anime object
 	 */
-	public Anime scrapeAnime() {
-		return new Anime(userAgent.getSource(), getName(), getEnglishName(), getJapaneseName(), getType(), getEpisodeCount(),
-				getStatus(), getDates(), getPremieredSeason(), getStudios(), getSourceType(), getGenres(), getDuration(),
-				getRating(), getScore(), getScoreCount(), getRanking(), getFavoritedCount());
+	public Anime scrape() {
+		try {
+			return new Anime(userAgent.getLocation(), getName(), getEnglishName(), getJapaneseName(), getImageUrl(),
+					getSynopsis(), getAdaptations(), getSideStories(), getPrequels(), getSequels(),
+					getAlternativeVersions(), getParentStories(), getType(), getEpisodeCount(), getStatus(), getDates(),
+					getPremieredSeason(), getStudios(), getSourceType(), getGenres(), getDuration(), getRating(),
+					getScore(), getScoreCount(), getRanking(), getFavoritedCount(), getPopularity());
+		} catch (Exception e) {
+			Logger.error("Failed to scrape data for: " + userAgent.getLocation());
+			return null;
+		}
 	}
 	
 	/**
@@ -50,7 +57,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span itemprop=name>");
 			value = e.getText().trim();
 		} catch (NotFound e) {
-			System.out.println("Error finding name");
+			Logger.warning("Error finding name");
 		}
 		return value;
 	}
@@ -66,7 +73,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>English:</span>");
 			value = e.getParent().getText().trim();
 		} catch (NotFound e) {
-			System.out.println("Error finding english name");
+			Logger.warning("Error finding english name");
 		}
 		return value;
 	}
@@ -82,7 +89,23 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Japanese:</span>");
 			value = e.getParent().getText().trim();
 		} catch (NotFound e) {
-			System.out.println("Error finding japanese name");
+			Logger.warning("Error finding japanese name");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's cover image url
+	 * 
+	 * @return - Image url
+	 */
+	public String getImageUrl() {
+		String value = null;
+		try {
+			Element e = userAgent.doc.findFirst("<meta property=og:image");
+			value = e.getAt("content");
+		} catch (NotFound e) {
+			Logger.warning("Error finding image url");
 		}
 		return value;
 	}
@@ -98,7 +121,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Type:</span>");
 			value = ShowType.forValue(e.getParent().getFirst("<a href>").getText().trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding type");
+			Logger.warning("Error finding type");
 		}
 		return value;
 	}
@@ -114,7 +137,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Episodes:</span>");
 			value = Integer.parseInt(e.getParent().getText().trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding episode count");
+			Logger.warning("Error finding episode count");
 		} catch (NumberFormatException e) {
 			value = null;
 		}
@@ -132,7 +155,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Status:</span>");
 			value = ShowStatus.forValue(e.getParent().getText().trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding status");
+			Logger.warning("Error finding status");
 		}
 		return value;
 	}
@@ -154,9 +177,9 @@ public class MALScraper {
 				}
 			}
 		} catch (NotFound e) {
-			System.out.println("Error finding start date");
+			Logger.warning("Error finding start date");
 		} catch (DateTimeParseException e) {
-			System.out.println("Error parsing start date");
+			Logger.warning("Error parsing start date");
 		}
 		return value;
 	}
@@ -173,7 +196,7 @@ public class MALScraper {
 			String[] text = e.getParent().findFirst("<a href>").getText().trim().split(" ");
 			value = new PremierSeason(PremierSeason.Season.forValue(text[0]), Integer.parseInt(text[1]));
 		} catch (NotFound e) {
-			System.out.println("Error finding premiered season");
+			Logger.warning("Error finding premiered season");
 		}
 		return value;
 	}
@@ -192,7 +215,7 @@ public class MALScraper {
 				value.add(studio.getText());
 			}
 		} catch (NotFound e) {
-			System.out.println("Error finding studios");
+			Logger.warning("Error finding studios");
 		}
 		return value;
 	}
@@ -208,7 +231,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Source:</span>");
 			value = ShowSourceType.forValue(e.getParent().getText().trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding source type");
+			Logger.warning("Error finding source type");
 		}
 		return value;
 	}
@@ -227,7 +250,7 @@ public class MALScraper {
 				value.add(genre.getText());
 			}
 		} catch (NotFound e) {
-			System.out.println("Error finding genres");
+			Logger.warning("Error finding genres");
 		}
 		return value;
 	}
@@ -251,7 +274,7 @@ public class MALScraper {
 				value += Integer.parseInt(subText[subText.length - 1]);
 			}
 		} catch (NotFound e) {
-			System.out.println("Error finding duration");
+			Logger.warning("Error finding duration");
 		} catch (NumberFormatException e) {
 			value = null;
 		}
@@ -269,7 +292,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Rating:</span>");
 			value = ShowRating.forValue(e.getParent().getText().trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding rating");
+			Logger.warning("Error finding rating");
 		}
 		return value;
 	}
@@ -285,7 +308,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span itemprop=ratingValue>");
 			value = Double.parseDouble(e.getText().trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding score");
+			Logger.warning("Error finding score");
 		} catch (NumberFormatException e) {
 			value = null;
 		}
@@ -303,7 +326,7 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span itemprop=ratingCount>");
 			value = Integer.parseInt(e.getText().replaceAll(",", "").trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding score count");
+			Logger.warning("Error finding score count");
 		} catch (NumberFormatException e) {
 			value = null;
 		}
@@ -321,7 +344,25 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Ranked:</span>");
 			value = Integer.parseInt(e.getParent().getText().replace("#", "").trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding ranking");
+			Logger.warning("Error finding ranking");
+		} catch (NumberFormatException e) {
+			value = null;
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's popularity
+	 * 
+	 * @return - Popularity
+	 */
+	private Integer getPopularity() {
+		Integer value = null;
+		try {
+			Element e = userAgent.doc.findFirst("<span class=dark_text>Popularity:</span>");
+			value = Integer.parseInt(e.getParent().getText().replace("#", "").trim());
+		} catch (NotFound e) {
+			Logger.warning("Error finding popularity");
 		} catch (NumberFormatException e) {
 			value = null;
 		}
@@ -339,9 +380,139 @@ public class MALScraper {
 			Element e = userAgent.doc.findFirst("<span class=dark_text>Favorites:</span>");
 			value = Integer.parseInt(e.getParent().getText().replaceAll(",", "").trim());
 		} catch (NotFound e) {
-			System.out.println("Error finding number of favorites");
+			Logger.warning("Error finding number of favorites");
 		} catch (NumberFormatException e) {
 			value = null;
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's list of adaptations
+	 * 
+	 * @return - List of adaptations
+	 */
+	public List<String> getAdaptations() {
+		List<String> value = new ArrayList<>();
+		try {
+			Element e = userAgent.doc.findFirst("<table class=anime_detail_related_anime");
+			List<Element> values = e.findFirst("<td>Adaptation").nextSiblingElement().getChildElements();
+			for (Element story : values) {
+				value.add(story.getText());
+			}
+		} catch (NotFound e) {
+			Logger.warning("Error finding adaptations");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's list of side stories
+	 * 
+	 * @return - List of side stories
+	 */
+	public List<String> getSideStories() {
+		List<String> value = new ArrayList<>();
+		try {
+			Element e = userAgent.doc.findFirst("<table class=anime_detail_related_anime");
+			List<Element> values = e.findFirst("<td>Side story").nextSiblingElement().getChildElements();
+			for (Element story : values) {
+				value.add(story.getText());
+			}
+		} catch (NotFound e) {
+			Logger.warning("Error finding side stories");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's list of sequels
+	 * 
+	 * @return - List of sequels
+	 */
+	public List<String> getSequels() {
+		List<String> value = new ArrayList<>();
+		try {
+			Element e = userAgent.doc.findFirst("<table class=anime_detail_related_anime");
+			List<Element> values = e.findFirst("<td>Sequel").nextSiblingElement().getChildElements();
+			for (Element story : values) {
+				value.add(story.getText());
+			}
+		} catch (NotFound e) {
+			Logger.warning("Error finding sequels");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's list of prequels
+	 * 
+	 * @return - List of prequels
+	 */
+	public List<String> getPrequels() {
+		List<String> value = new ArrayList<>();
+		try {
+			Element e = userAgent.doc.findFirst("<table class=anime_detail_related_anime");
+			List<Element> values = e.findFirst("<td>Prequel").nextSiblingElement().getChildElements();
+			for (Element story : values) {
+				value.add(story.getText());
+			}
+		} catch (NotFound e) {
+			Logger.warning("Error finding prequels");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's list of alternative versions
+	 * 
+	 * @return - List of alternative versions
+	 */
+	public List<String> getAlternativeVersions() {
+		List<String> value = new ArrayList<>();
+		try {
+			Element e = userAgent.doc.findFirst("<table class=anime_detail_related_anime");
+			List<Element> values = e.findFirst("<td>Alternative").nextSiblingElement().getChildElements();
+			for (Element story : values) {
+				value.add(story.getText());
+			}
+		} catch (NotFound e) {
+			Logger.warning("Error finding alternative versions");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's list of parent stories
+	 * 
+	 * @return - List of parent stories
+	 */
+	public List<String> getParentStories() {
+		List<String> value = new ArrayList<>();
+		try {
+			Element e = userAgent.doc.findFirst("<table class=anime_detail_related_anime");
+			List<Element> values = e.findFirst("<td>Parent Story").nextSiblingElement().getChildElements();
+			for (Element story : values) {
+				value.add(story.getText());
+			}
+		} catch (NotFound e) {
+			Logger.warning("Error finding parent stories");
+		}
+		return value;
+	}
+	
+	/**
+	 * Scrapes the show's synopsis
+	 * 
+	 * @return - Synopsis
+	 */
+	public String getSynopsis() {
+		String value = null;
+		try {
+			Element e = userAgent.doc.findFirst("<span itemprop=description>");
+			value = e.getText();
+		} catch (NotFound e) {
+			Logger.warning("Error finding synopsis");
 		}
 		return value;
 	}
