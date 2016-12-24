@@ -1,9 +1,9 @@
-public class PremieredSeason {
+public class PremierSeason {
 	
 	private Season season;
 	private int year;
 	
-	public PremieredSeason(Season season, int year) {
+	public PremierSeason(Season season, int year) {
 		this.season = season;
 		this.year = year;
 	}
