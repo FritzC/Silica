@@ -1,0 +1,54 @@
+<qqueue> ah. well it turns out that that all the metadata on madokami is in fact scraped directly from mangaupdates
+<NA-45> really?
+<NA-45> awesome, that makes it easier
+<NA-45> thank you very much
+<qqueue> yeah, source code for the website is https://github.com/qqueue/MangaIndex/blob/master/app/lib/MangaUpdates.php
+<qqueue> I can give you a dump of the database, which will give you madokami dir -> MU id
+<NA-45> that would be awesome
+<qqueue> sure, give me a few minutes to figure out a query
+<NA-45> thanks so much
+<qqueue> i'm curious, what exactly are you doing with your mirror anyway? personal database thing?
+<NA-45> pretty much
+<NA-45> making myself an archive app
+<NA-45> that will let me do some advanced sorting and managing
+<NA-45> tied in with my mangaupdates and mal accounts
+<qqueue> cool
+<NA-45> and will let me pipe to my android devices
+<NA-45> through local network
+<qqueue> I made you an rsync account: user: na45, pass: aihighushaej7Thoo4yaep9wahzeatho
+<NA-45> thanks
+<qqueue> usage is roughly http://pastebin.com/dUbPQNQD
+<qqueue> if you do stick it in cron or whatever, make sure to use flock to prevent concurrent syncs
+<NA-45> alright
+<NA-45> thanks again, helps out a lot
+<qqueue> ok, you can hit https://manga.madokami.al/stupidapi/muids to get a TSV from path to -> mu id
+<qqueue> it's a dumb cgi script, so don't abuse it too often
+<NA-45> alright will do
+<NA-45> thanks again, helps me out a ton
+<qqueue> no prob
+
+______________________________________________________________________________
+
+https://github.com/qqueue/MangaIndex/blob/master/app/lib/MangaUpdates.php
+
+______________________________________________________________________________
+
+
+run in bash from home/na45 directory
+
+	rsync \
+	  --partial \
+	  --log-file /mnt/d/madokami/output.log \
+	  --recursive \
+	  --delete-after \
+	  --exclude='/.git' \
+	  --exclude='/Admin cleanup' \
+	  --exclude='/WIP' \
+	  --exclude='/Manga' \
+	  --exclude='/Artbooks' \
+	  --exclude='/Raws' \
+	  --filter="protect .stfolder" \
+	  --size-only \
+	  --password-file=secret \
+	  rsync://na45@manga.madokami.al/manga \
+	  /mnt/d/madokami/dump

@@ -1,0 +1,102 @@
+[
+  {
+    "url": "https://myanimelist.net/manga/1/Monster",
+    "name": "Monster",
+    "englishName": "Monster",
+    "japaneseName": "MONSTER",
+    "imageUrl": "https://myanimelist.cdn-dena.com/images/manga/3/54525.jpg",
+    "synopsis": "Dr. Kenzou Tenma is a renowned brain surgeon of Japanese descent working in Europe. Highly lauded by his peers as one of the great young minds that will revolutionize the field, he is blessed with a beautiful fianc\u0026eacute;e and is on the cusp of a big promotion in the hospital he works at. But all of that is about to change with a grave dilemma that Kenzou faces one night\u0026mdash;whether to save the life of a small boy or that of the town\u0026#039;s mayor. Despite being pressured by his superiors to perform surgery on the mayor, his morals force him to perform the surgery on the other critical patient, saving his life and forfeiting the mayor\u0026#039;s. A doctor is taught to believe that all life is equal; however, when a series of murders occur in the surgeon\u0026#039;s vicinity, all of the evidence pointing to the boy he saved, Kenzou\u0026#039;s beliefs are shaken. Along his journey to unravel the true identity of his little patient, Kenzou discovers that the fate of the world may be intertwined with the mysterious child.\r\n\r\n[Written by MAL Rewrite]",
+    "adaptations": [
+      "Monster"
+    ],
+    "sideStories": [
+      "Mou Hitotsu no Monster: The Investigative Report"
+    ],
+    "prequels": [],
+    "sequels": [],
+    "alternativeVersions": [],
+    "parentStories": [],
+    "type": "MANGA",
+    "volumes": 18,
+    "chapters": 162,
+    "dates": [
+      {
+        "year": 1994,
+        "month": 12,
+        "day": 5
+      },
+      {
+        "year": 2001,
+        "month": 12,
+        "day": 20
+      }
+    ],
+    "authors": [
+      "Urasawa, Naoki"
+    ],
+    "genres": [
+      "Mystery",
+      "Drama",
+      "Psychological",
+      "Seinen"
+    ],
+    "serialization": "Big Comic Original",
+    "score": 9.06,
+    "scoredBy": 20532,
+    "ranking": 6,
+    "favoriteCount": 5090,
+    "popularity": 64
+  },
+  {
+    "url": "https://myanimelist.net/manga/2/Berserk",
+    "name": "Berserk",
+    "englishName": "Berserk",
+    "japaneseName": "ベルセルク",
+    "imageUrl": "https://myanimelist.cdn-dena.com/images/manga/1/157931.jpg",
+    "synopsis": "Guts, a former mercenary now known as the \u0026quot;Black Swordsman,\u0026quot; is out for revenge. After a tumultuous childhood, he finally finds someone he respects and believes he can trust, only to have everything fall apart when this person takes away everything important to Guts for the purpose of fulfilling his own desires. Now marked for death, Guts becomes condemned to a fate in which he is relentlessly pursued by demonic beings.\r\n\r\nSetting out on a dreadful quest riddled with misfortune, Guts, armed with a massive sword and monstrous strength, will let nothing stop him, not even death itself, until he is finally able to take the head of the one who stripped him\u0026mdash;and his loved one\u0026mdash;of their humanity.\r\n\r\n[Written by MAL Rewrite]\r\n\r\n\r\nVolume 14: Berserk: The Prototype",
+    "adaptations": [
+      "Berserk: Ougon Jidai-hen II - Doldrey Kouryaku",
+      "Berserk: Ougon Jidai-hen I - Haou no Tamago",
+      "Berserk: Ougon Jidai-hen III - Kourin",
+      "Berserk",
+      "Berserk (2017)",
+      "Berserk (2016)"
+    ],
+    "sideStories": [],
+    "prequels": [],
+    "sequels": [],
+    "alternativeVersions": [],
+    "parentStories": [],
+    "type": "MANGA",
+    "status": "PUBLISHING",
+    "dates": [
+      {
+        "year": 1989,
+        "month": 8,
+        "day": 25
+      },
+      null
+    ],
+    "authors": [
+      "Miura, Kentarou"
+    ],
+    "genres": [
+      "Action",
+      "Adventure",
+      "Demons",
+      "Drama",
+      "Fantasy",
+      "Horror",
+      "Supernatural",
+      "Military",
+      "Psychological",
+      "Seinen"
+    ],
+    "serialization": "Young Animal",
+    "score": 9.27,
+    "scoredBy": 60244,
+    "ranking": 1,
+    "favoriteCount": 28947,
+    "popularity": 8
+  }
+]
